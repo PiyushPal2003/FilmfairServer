@@ -137,7 +137,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(cors({ origin: 'https://filmfair.vercel.app/', credentials: true }));
+app.use(cors({ origin: 'https://filmfair.vercel.app', credentials: true }));
 
 app.get("/", (req, res)=>{
     res.send("FlimFair Website Server")
@@ -247,7 +247,7 @@ app.post("/user_signin", async (req, res) => {
                             res.status(500).json({ error: err.message });
                         } else {
                             //console.log(token);
-                            res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
+                            res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
                             res.cookie('FilmFairRefresh', token, {
                                 expires: expirationDate,
                                 httpOnly: false,
@@ -291,7 +291,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -339,7 +339,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -387,7 +387,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -646,7 +646,7 @@ app.post('/generatejwt', async (req, res) => {
                     res.status(500).json({ error: err.message });
                 } else {
                     //console.log(token);
-                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
+                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
                     res.cookie('FilmFairRefresh', token, {
                         maxAge: daysRemaining * 24 * 60 * 60 * 1000,
                         httpOnly: false,
@@ -688,8 +688,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `https://filmfair.vercel.app//`,
-            cancel_url: `https://filmfair.vercel.app//`,
+            success_url: `https://filmfair.vercel.app/`,
+            cancel_url: `https://filmfair.vercel.app/`,
         });
         const dt = await userdb.findOne({_id: user.usr_id})
             if(dt){
@@ -763,7 +763,7 @@ app.post('/customer-portal', async(req, res) => {
     try{
         const session = await stripe.billingPortal.sessions.create({
             customer: custID,
-            return_url: 'https://filmfair.vercel.app//profile',
+            return_url: 'https://filmfair.vercel.app/profile',
           });
           //console.log(session);
           res.json({sesID: session.id, url: session.url});
