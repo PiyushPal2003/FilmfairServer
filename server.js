@@ -137,7 +137,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://filmfair.vercel.app/', credentials: true }));
 
 app.get("/", (req, res)=>{
     res.send("FlimFair Website Server")
@@ -156,12 +156,12 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
       if (err) {
-        //console.log("unauthorized line123", err)
+        console.log("unauthorized line123", err)
         return res.status(401).json({ message: "Unauthorized (jwt middleware line 124)" });
       }
     req.user = decoded;
     next();
-    //console.log('verified line 128');
+    console.log('verified line 128');
 }); };
 
 
@@ -247,7 +247,7 @@ app.post("/user_signin", async (req, res) => {
                             res.status(500).json({ error: err.message });
                         } else {
                             //console.log(token);
-                            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                            res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
                             res.cookie('FilmFairRefresh', token, {
                                 expires: expirationDate,
                                 httpOnly: false,
@@ -291,7 +291,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -339,7 +339,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -387,7 +387,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
@@ -418,59 +418,6 @@ app.post("/user_signin", async (req, res) => {
                 }
 
                 // 2) Users plan is active but logged out meaning Fingerprint not in db so check for limit
-
-                // const token = dt.jwt;
-                // //console.log(token);
-                // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-                // res.cookie('FilmFairRefresh', token, {
-                //     maxAge: daysDifference * 24 * 60 * 60 * 1000,
-                //     httpOnly: false,
-                //     secure: false,
-                //     sameSite: 'Strict',
-                //     domain: 'localhost',
-                //     path: '/'
-                // });
-                // res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
-                // //console.log('setCookie initiated LINE(167)');
-
-                // jwt.sign({
-                //     userID: dt._id.toString(),
-                //     name: dt.UserNAME,
-                //     email: dt.UserEMAIL,
-                //     //sessionID: dt.session_id,
-                //     paymentStatus: dt.Subscription.get('paymentStatus'),
-                //     subsID: dt.Subscription.get('subscriptionID'),
-                //     amtPaid: dt.Subscription.get('amtPaid'),
-                //     //invoiceUrl: dt.Subscription.get('invoiceUrl'),
-                //     startDate: dt.Subscription.get('startDate'),
-                //     endDate: dt.Subscription.get('endDate'),
-                // }, process.env.JWT_KEY, { expiresIn: `${daysDifference}d` }, async(err, token) => {
-                //     if (err) {
-                //         //console.log("LINE(230)", err);
-                //         res.status(500).json({ error: err.message });
-                //     } else {
-                //         //console.log(token);
-                //         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-                //         res.cookie('FilmFairRefresh', token, {
-                //             maxAge: daysDifference * 24 * 60 * 60 * 1000,
-                //             httpOnly: false,
-                //             secure: false,
-                //             sameSite: 'Strict',
-                //             domain: 'localhost',
-                //             path: '/'
-                //         });
-                //         //res.json({jwt:token});
-                //         res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
-                //         //console.log('setCookie initiated');
-    
-                //         // const dtt = await userdb.findOne({ session_id: sesID });
-                //         // if(dtt){
-                //             dt.jwt= token;
-                //             await dt.save();
-                //             //console.log(" JWT saved in DATABASE ")
-                //         //}
-                //     }
-                // });
 
             }
             else if (daysDifference && daysDifference < 0) {
@@ -617,14 +564,14 @@ app.post("/getuser", verifyToken, async(req, res)=>{
     try{
         const dt = await userdb.findOne({ _id: user.userID });
         if(dt){
-            //console.log(dt)
+            console.log(dt)
             res.json(dt);
         }
         else{
-            //console.log("User Not Found line304");
+            console.log("User Not Found line304");
         }
     }catch(e){
-        //console.log("Piyush Error on line 298",e)
+        console.log("Piyush Error on line 298",e)
     }
 })
 
@@ -699,7 +646,7 @@ app.post('/generatejwt', async (req, res) => {
                     res.status(500).json({ error: err.message });
                 } else {
                     //console.log(token);
-                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app/');
                     res.cookie('FilmFairRefresh', token, {
                         maxAge: daysRemaining * 24 * 60 * 60 * 1000,
                         httpOnly: false,
@@ -741,8 +688,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `http://localhost:3000/`,
-            cancel_url: `http://localhost:3000/`,
+            success_url: `https://filmfair.vercel.app//`,
+            cancel_url: `https://filmfair.vercel.app//`,
         });
         const dt = await userdb.findOne({_id: user.usr_id})
             if(dt){
@@ -816,7 +763,7 @@ app.post('/customer-portal', async(req, res) => {
     try{
         const session = await stripe.billingPortal.sessions.create({
             customer: custID,
-            return_url: 'http://localhost:3000/profile',
+            return_url: 'https://filmfair.vercel.app//profile',
           });
           //console.log(session);
           res.json({sesID: session.id, url: session.url});
@@ -857,29 +804,3 @@ app.post('/verifyfingerprint', async(req,res)=>{
 app.listen(port, ()=>{
     //console.log(`Server running successfully on port no. ${port}`);
 })
-
-// app.get("/api", async(req,res)=>{
-//     try{
-//         const { genre } = req.query;
-//         const {search} = req.query;
-//         const {cat} = req.query;
-//         if(genre){
-//             const resp = await apidata.find({genre: { $regex: new RegExp(genre, "i") }});
-//             res.json(resp);
-//         }
-//         else if(search){
-//             const resp = await apidata.find({movies_title: { $regex: new RegExp(search, "i") }});
-//             res.json(resp);
-//         }
-//         else if(cat){
-//             const resp = await apidata.find({cat: { $regex: new RegExp(cat, "i") }});
-//             res.json(resp);
-//         }
-//         else {
-//             const resp = await apidata.find({});
-//             res.json(resp);
-//         }
-//     } catch(e){
-//         res.status(404).send(e);
-//     }
-// })
