@@ -251,9 +251,9 @@ app.post("/user_signin", async (req, res) => {
                             res.cookie('FilmFairRefresh', token, {
                                 expires: expirationDate,
                                 httpOnly: false,
-                                secure: false,
+                                secure: true,
                                 sameSite: 'Strict',
-                                domain: 'localhost',
+                                domain: 'filmfair.vercel.app',
                                 path: '/'
                             });
                             //res.json({jwt:token});
@@ -295,9 +295,9 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: false,
+                                        secure: true,
                                         sameSite: 'Strict',
-                                        domain: 'localhost',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -343,9 +343,9 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: false,
+                                        secure: true,
                                         sameSite: 'Strict',
-                                        domain: 'localhost',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -391,9 +391,9 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: false,
+                                        secure: true,
                                         sameSite: 'Strict',
-                                        domain: 'localhost',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -650,9 +650,9 @@ app.post('/generatejwt', async (req, res) => {
                     res.cookie('FilmFairRefresh', token, {
                         maxAge: daysRemaining * 24 * 60 * 60 * 1000,
                         httpOnly: false,
-                        secure: false,
+                        secure: true,
                         sameSite: 'Strict',
-                        domain: 'localhost',
+                        domain: 'filmfair.vercel.app',
                         path: '/'
                     });
                     res.json({jwt:token});
@@ -688,8 +688,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `https://filmfair.vercel.app/`,
-            cancel_url: `https://filmfair.vercel.app/`,
+            success_url: `https://filmfair.vercel.app`,
+            cancel_url: `https://filmfair.vercel.app`,
         });
         const dt = await userdb.findOne({_id: user.usr_id})
             if(dt){
