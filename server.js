@@ -246,18 +246,8 @@ app.post("/user_signin", async (req, res) => {
                             //console.log("LINE(230)", err);
                             res.status(500).json({ error: err.message });
                         } else {
-                            //console.log(token);
-                            res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
-                            res.cookie('FilmFairRefresh', token, {
-                                expires: expirationDate,
-                                httpOnly: false,
-                                secure: false,
-                                sameSite: 'None',
-                                domain: 'filmfair.vercel.app',
-                                path: '/'
-                            });
                             //res.json({jwt:token});
-                            res.status(200).json({ message:'User Exists && Active1', userid: dt._id, jwt: token });
+                            res.status(200).json({ message:'User Exists && Active1', userid: dt._id, jwt: token, expire: expirationDate});
                             //console.log('setCookie initiated');
         
                             // const dtt = await userdb.findOne({ session_id: sesID });
@@ -290,18 +280,8 @@ app.post("/user_signin", async (req, res) => {
                                     //console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
-                                    //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
-                                    res.cookie('FilmFairRefresh', token, {
-                                        expires: expirationDate,
-                                        httpOnly: false,
-                                        secure: false,
-                                        sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
-                                        path: '/'
-                                    });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active2', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active2', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -338,18 +318,8 @@ app.post("/user_signin", async (req, res) => {
                                     //console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
-                                    //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
-                                    res.cookie('FilmFairRefresh', token, {
-                                        expires: expirationDate,
-                                        httpOnly: false,
-                                        secure: false,
-                                        sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
-                                        path: '/'
-                                    });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active3', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active3', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -386,18 +356,8 @@ app.post("/user_signin", async (req, res) => {
                                     //console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
-                                    //console.log(token);
-                                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
-                                    res.cookie('FilmFairRefresh', token, {
-                                        expires: expirationDate,
-                                        httpOnly: false,
-                                        secure: false,
-                                        sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
-                                        path: '/'
-                                    });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active4', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active4', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -626,6 +586,7 @@ app.post('/generatejwt', async (req, res) => {
             const differenceInMs = endDate - today;
             const millisecondsInADay = 1000 * 60 * 60 * 24;
             let daysRemaining = Math.ceil(Math.abs(differenceInMs) / millisecondsInADay); // Convert milliseconds to days and round up
+            const exp=daysRemaining * 24 * 60 * 60 * 1000; 
             //daysRemaining = daysRemaining+1;
             //console.log(daysRemaining)
             
@@ -645,17 +606,7 @@ app.post('/generatejwt', async (req, res) => {
                     //console.log("LINE(184)", err);
                     res.status(500).json({ error: err.message });
                 } else {
-                    //console.log(token);
-                    res.setHeader('Access-Control-Allow-Origin', 'https://filmfair.vercel.app');
-                    res.cookie('FilmFairRefresh', token, {
-                        maxAge: daysRemaining * 24 * 60 * 60 * 1000,
-                        httpOnly: false,
-                        secure: false,
-                        sameSite: 'None',
-                        domain: 'filmfair.vercel.app',
-                        path: '/'
-                    });
-                    res.json({jwt:token});
+                    res.json({jwt:token, expire:exp});
                     //console.log('setCookie initiated');
 
                     // const dtt = await userdb.findOne({ session_id: sesID });
