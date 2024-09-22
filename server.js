@@ -42,7 +42,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             //console.log("inside customer updated, line (44)........................................................................")
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { _id: cust_updt.metadata.dbid },
+                    { _id: ObjectId(cust_updt.metadata.dbid) },
                     {
                       $set: {
                         'Subscription.custID': cust_updt.id,
@@ -77,7 +77,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { '_id': subs_updated.metadata.dbid },
+                    { '_id': ObjectId(subs_updated.metadata.dbid) },
                     {
                       $set: {
                         'Subscription.amtPaid': subs_updated.plan.amount,
@@ -107,7 +107,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
           try{
             const dt = await userdb.findOneAndUpdate(
-                { '_id': invoice_paid.metadata.dbid },
+                { '_id': ObjectId(invoice_paid.metadata.dbid) },
                 {
                   $set: {
                     'Subscription.cust_email': invoice_paid.customer_email,
