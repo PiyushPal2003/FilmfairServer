@@ -253,11 +253,10 @@ app.post("/user_signin", async (req, res) => {
                                 httpOnly: false,
                                 secure: true,
                                 sameSite: 'None',
-                                domain: 'filmfair.vercel.app',
                                 path: '/'
                             });
                             //res.json({jwt:token});
-                            res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
+                            res.status(200).json({ message:'User Exists && Active1', userid: dt._id, jwt: token });
                             //console.log('setCookie initiated');
         
                             // const dtt = await userdb.findOne({ session_id: sesID });
@@ -297,11 +296,10 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: true,
                                         sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active2', userid: dt._id, jwt: token });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -345,11 +343,10 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: true,
                                         sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active3', userid: dt._id, jwt: token });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -393,11 +390,10 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: true,
                                         sameSite: 'None',
-                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
-                                    res.status(200).json({ message:'User Exists && Active', userid: dt._id, jwt: token });
+                                    res.status(200).json({ message:'User Exists && Active4', userid: dt._id, jwt: token });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
@@ -652,7 +648,6 @@ app.post('/generatejwt', async (req, res) => {
                         httpOnly: false,
                         secure: true,
                         sameSite: 'None',
-                        domain: 'filmfair.vercel.app',
                         path: '/'
                     });
                     res.json({jwt:token});
