@@ -22,7 +22,6 @@ const user_details = new mongoose.Schema({
     Devices: {
         type: Array,
         required :true,
-        unique: true,
     },
     session_id: {
         type: String,
