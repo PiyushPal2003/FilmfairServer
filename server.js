@@ -253,7 +253,7 @@ app.post("/user_signin", async (req, res) => {
                                 httpOnly: false,
                                 secure: false,
                                 sameSite: 'None',
-                                domain: '.vercel.app',
+                                domain: 'filmfair.vercel.app',
                                 path: '/'
                             });
                             //res.json({jwt:token});
@@ -297,7 +297,7 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: false,
                                         sameSite: 'None',
-                                        domain: '.vercel.app',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -345,7 +345,7 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: false,
                                         sameSite: 'None',
-                                        domain: '.vercel.app',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -393,7 +393,7 @@ app.post("/user_signin", async (req, res) => {
                                         httpOnly: false,
                                         secure: false,
                                         sameSite: 'None',
-                                        domain: '.vercel.app',
+                                        domain: 'filmfair.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -652,7 +652,7 @@ app.post('/generatejwt', async (req, res) => {
                         httpOnly: false,
                         secure: false,
                         sameSite: 'None',
-                        domain: '.vercel.app',
+                        domain: 'filmfair.vercel.app',
                         path: '/'
                     });
                     res.json({jwt:token});
