@@ -42,7 +42,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             //console.log("inside customer updated, line (44)........................................................................")
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { UserEMAIL: cust_updt.email },
+                    { _id: cust_updt.metadata.dbid },
                     {
                       $set: {
                         'Subscription.custID': cust_updt.id,
@@ -77,7 +77,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { 'Subscription.custID': subs_updated.customer },
+                    { '_id': subs_updated.metadata.dbid },
                     {
                       $set: {
                         'Subscription.amtPaid': subs_updated.plan.amount,
@@ -107,7 +107,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
           try{
             const dt = await userdb.findOneAndUpdate(
-                { 'Subscription.custID': invoice_paid.customer },
+                { '_id': invoice_paid.metadata.dbid },
                 {
                   $set: {
                     'Subscription.cust_email': invoice_paid.customer_email,
@@ -641,6 +641,9 @@ app.post('/checkout', async(req, res) => {
             mode: 'subscription',
             success_url: `https://filmfair.vercel.app`,
             cancel_url: `https://filmfair.vercel.app`,
+            metadata: {
+                dbid: user.usr_id, // Custom data you want to include
+              }
         });
         const dt = await userdb.findOne({_id: user.usr_id})
             if(dt){
