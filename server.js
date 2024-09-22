@@ -251,7 +251,7 @@ app.post("/user_signin", async (req, res) => {
                             res.cookie('FilmFairRefresh', token, {
                                 expires: expirationDate,
                                 httpOnly: false,
-                                secure: true,
+                                secure: false,
                                 sameSite: 'None',
                                 path: '/'
                             });
@@ -294,7 +294,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: true,
+                                        secure: false,
                                         sameSite: 'None',
                                         path: '/'
                                     });
@@ -341,7 +341,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: true,
+                                        secure: false,
                                         sameSite: 'None',
                                         path: '/'
                                     });
@@ -388,7 +388,7 @@ app.post("/user_signin", async (req, res) => {
                                     res.cookie('FilmFairRefresh', token, {
                                         expires: expirationDate,
                                         httpOnly: false,
-                                        secure: true,
+                                        secure: false,
                                         sameSite: 'None',
                                         path: '/'
                                     });
@@ -646,7 +646,7 @@ app.post('/generatejwt', async (req, res) => {
                     res.cookie('FilmFairRefresh', token, {
                         maxAge: daysRemaining * 24 * 60 * 60 * 1000,
                         httpOnly: false,
-                        secure: true,
+                        secure: false,
                         sameSite: 'None',
                         path: '/'
                     });
