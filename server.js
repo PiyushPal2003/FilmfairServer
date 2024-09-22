@@ -641,6 +641,11 @@ app.post('/checkout', async(req, res) => {
             mode: 'subscription',
             success_url: `https://filmfair.vercel.app`,
             cancel_url: `https://filmfair.vercel.app`,
+            subscription_data: {
+                metadata: {
+                  dbid: user.usr_id, // Add metadata here for subscription related webhooks
+                }
+            },
             metadata: {
                 dbid: user.usr_id, // Custom data you want to include
               }
