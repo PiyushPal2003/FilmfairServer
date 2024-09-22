@@ -252,7 +252,8 @@ app.post("/user_signin", async (req, res) => {
                                 expires: expirationDate,
                                 httpOnly: false,
                                 secure: false,
-                                sameSite: 'None',
+                                sameSite: 'Strict',
+                                domain: '.vercel.app',
                                 path: '/'
                             });
                             //res.json({jwt:token});
@@ -295,7 +296,8 @@ app.post("/user_signin", async (req, res) => {
                                         expires: expirationDate,
                                         httpOnly: false,
                                         secure: false,
-                                        sameSite: 'None',
+                                        sameSite: 'Strict',
+                                        domain: '.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -342,7 +344,8 @@ app.post("/user_signin", async (req, res) => {
                                         expires: expirationDate,
                                         httpOnly: false,
                                         secure: false,
-                                        sameSite: 'None',
+                                        sameSite: 'Strict',
+                                        domain: '.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -389,7 +392,8 @@ app.post("/user_signin", async (req, res) => {
                                         expires: expirationDate,
                                         httpOnly: false,
                                         secure: false,
-                                        sameSite: 'None',
+                                        sameSite: 'Strict',
+                                        domain: '.vercel.app',
                                         path: '/'
                                     });
                                     //res.json({jwt:token});
@@ -647,7 +651,8 @@ app.post('/generatejwt', async (req, res) => {
                         maxAge: daysRemaining * 24 * 60 * 60 * 1000,
                         httpOnly: false,
                         secure: false,
-                        sameSite: 'None',
+                        sameSite: 'Strict',
+                        domain: '.vercel.app',
                         path: '/'
                     });
                     res.json({jwt:token});
