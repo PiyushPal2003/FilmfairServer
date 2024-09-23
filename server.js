@@ -558,7 +558,6 @@ app.post('/striperetrieve', async(req,res)=>{
 
 app.post('/generatejwt', async (req, res) => {
     const sesID = req.body.sessionID;
-    const finger = req.body.visitorId;
     try {
         const dt = await userdb.findOne({ session_id: sesID });
         if (dt) {
@@ -589,10 +588,10 @@ app.post('/generatejwt', async (req, res) => {
                     res.status(500).json({ error: err.message });
                 } else {
                     dt.jwt= token;
-                    dt.Devices.push(finger);
+                    dt.Devices.push(req.body.visitorId);
                     await dt.save();
                     
-                    res.json({jwt:token, expire:exp});
+                    res.status(202).json({jwt:token, expire:exp});
                     //console.log('setCookie initiated');
 
                     // const dtt = await userdb.findOne({ session_id: sesID });
