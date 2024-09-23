@@ -587,12 +587,10 @@ app.post('/generatejwt', async (req, res) => {
                     //console.log("LINE(184)", err);
                     res.status(500).json({ error: err.message });
                 } else {
-                    dt.jwt= token;
-                    dt.Devices.push(req.body.visitorId);
-                    await dt.save();
-                    
                     res.status(202).json({jwt:token, expire:exp});
                     //console.log('setCookie initiated');
+                    dt.jwt= token;
+                    dt.save();
 
                     // const dtt = await userdb.findOne({ session_id: sesID });
                     // if(dtt){
