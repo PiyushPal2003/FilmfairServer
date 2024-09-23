@@ -42,7 +42,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             //console.log("inside customer updated, line (44)........................................................................")
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { _id: ObjectId(cust_updt.metadata.dbid) },
+                    { _id: cust_updt.metadata.dbid },
                     {
                       $set: {
                         'Subscription.custID': cust_updt.id,
@@ -77,7 +77,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             
             try{
                 const dt = await userdb.findOneAndUpdate(
-                    { '_id': ObjectId(subs_updated.metadata.dbid) },
+                    { _id: subs_updated.metadata.dbid },
                     {
                       $set: {
                         'Subscription.amtPaid': subs_updated.plan.amount,
@@ -87,14 +87,15 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
                       }
                     }, { new: true } );
                   if(dt){
-                    //console.log("user found LINE(86), Subscription Updated Webhook") 
+                    console.log("user found, Subscription Updated Webhook") 
                 }
                   else{
-                    //console.log("user not found, Subscription Updated Webhook") 
+                    console.log("user not found, Subscription Updated Webhook") 
                 }
                     
                 } catch(err){
-                    //console.log("Subscription Updated ERROR PIYUSH.........." + err)
+                    throw new Error('Error Subscription Updated Webhook', err);
+                    console.log("Subscription Updated ERROR PIYUSH.........." + err)
                 }
             
 
@@ -107,7 +108,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
           try{
             const dt = await userdb.findOneAndUpdate(
-                { '_id': ObjectId(invoice_paid.metadata.dbid) },
+                { _id: invoice_paid.lines.data[0].metadata.dbid },
                 {
                   $set: {
                     'Subscription.cust_email': invoice_paid.customer_email,
@@ -117,14 +118,15 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
                   }
                 }, { new: true } );
               if(dt){
-                //console.log("user found LINE(113), INVOICE PAID WEBHOOK") 
+                console.log("user found, INVOICE PAID WEBHOOK") 
             }
               else{
-                //console.log("user not found, INVOICE PAID WEBHOOK") 
+                console.log("user not found, INVOICE PAID WEBHOOK") 
             }
                 
             } catch(err){
-                //console.log("INVOICE PAID ERROR PIYUSH.........." + err)
+                throw new Error('Error INVOICE PAID Webhook', err);
+                console.log("INVOICE PAID ERROR PIYUSH.........." + err)
             }
             
             break;
