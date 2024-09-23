@@ -37,32 +37,6 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
     switch (event.type) {
 
-        case 'customer.updated':
-            const cust_updt = event.data.object;
-            //console.log("inside customer updated, line (44)........................................................................")
-            try{
-                const dt = await userdb.findOneAndUpdate(
-                    { _id: cust_updt.metadata.dbid },
-                    {
-                      $set: {
-                        'Subscription.custID': cust_updt.id,
-                      }
-                    }, { new: true } );
-                  if(dt){
-                    //console.log("user found LINE(54) CUSTOMER UPDATED WEBHOOK") 
-                }
-                  else{
-                    //console.log("user not found CUSTOMER UPDATED WEBHOOK") 
-                }
-                }
-            catch(e){
-                //console.log("CUSTOMER UPDATED WEBHOOK ERROR PIYUSH.........." + e) 
-            }
-
-            break;
-
-
-
         case 'customer.subscription.updated':
             const subs_updated= event.data.object;
             //console.log("Inside CustomerSubscriptionUpdated CONSOLED LOGGED LINE(67)........................................................")
@@ -84,6 +58,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
                         'Subscription.subscriptionID': subs_updated.id,
                         'Subscription.startDate': startdt,
                         'Subscription.endDate': enddt,
+                        'Subscription.custID': subs_updated.customer
                       }
                     }, { new: true } );
                   if(dt){
