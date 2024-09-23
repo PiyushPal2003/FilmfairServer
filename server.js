@@ -249,13 +249,14 @@ app.post("/user_signin", async (req, res) => {
                             res.status(500).json({ error: err.message });
                         } else {
                             //res.json({jwt:token});
+                            dt.jwt= token;
+                            await dt.save();
+
                             res.status(200).json({ message:'User Exists && Active1', userid: dt._id, jwt: token, expire: expirationDate});
                             //console.log('setCookie initiated');
         
                             // const dtt = await userdb.findOne({ session_id: sesID });
                             // if(dtt){
-                                dt.jwt= token;
-                                await dt.save();
                                 //console.log(" JWT saved in DATABASE ")
                             //}
                         }
@@ -283,14 +284,15 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
+                                    dt.jwt= token;
+                                    dt.Devices.push(req.body.usrfingerprint)
+                                    await dt.save();
+
                                     res.status(200).json({ message:'User Exists && Active2', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        dt.jwt= token;
-                                        dt.Devices.push(req.body.usrfingerprint)
-                                        await dt.save();
                                         //console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
@@ -321,14 +323,15 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
+                                    dt.jwt= token;
+                                    dt.Devices.push(req.body.usrfingerprint)
+                                    await dt.save();
+
                                     res.status(200).json({ message:'User Exists && Active3', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        dt.jwt= token;
-                                        dt.Devices.push(req.body.usrfingerprint)
-                                        await dt.save();
                                         //console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
@@ -359,14 +362,15 @@ app.post("/user_signin", async (req, res) => {
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
+                                    dt.jwt= token;
+                                    dt.Devices.push(req.body.usrfingerprint)
+                                    await dt.save();
+                                    
                                     res.status(200).json({ message:'User Exists && Active4', userid: dt._id, jwt: token, expire: expirationDate });
                                     //console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        dt.jwt= token;
-                                        dt.Devices.push(req.body.usrfingerprint)
-                                        await dt.save();
                                         //console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
