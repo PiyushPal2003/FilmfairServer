@@ -17,7 +17,6 @@ const user_details = new mongoose.Schema({
     Wishlist: {
         type: Array,
         required :true,
-        unique: true,
     },
     Devices: {
         type: Array,

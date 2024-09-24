@@ -24,14 +24,14 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
     try{
         event = stripe.webhooks.constructEvent(payload,sig,signingsecret)
     } catch(e){
-        //console.log("Attention PIYUSH WEBHOOK ERROR (line 235)" + e);
+        console.log("Attention PIYUSH WEBHOOK ERROR (line 235)" + e);
         res.status(400).json({success: false});
         return
     }
 
     //if successfull i.e no error
-    // //console.log(event.type)
-    // //console.log(event.data.object)
+    // console.log(event.type)
+    // console.log(event.data.object)
     res.status(200).json({success:true})
 
 
@@ -39,15 +39,15 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
         case 'customer.subscription.updated':
             const subs_updated= event.data.object;
-            //console.log("Inside CustomerSubscriptionUpdated CONSOLED LOGGED LINE(67)........................................................")
+            console.log("Inside CustomerSubscriptionUpdated CONSOLED LOGGED LINE(67)........................................................")
             const startdt= moment.unix(subs_updated.current_period_start).format('YYYY-MM-DD')
             const enddt= moment.unix(subs_updated.current_period_end).format('YYYY-MM-DD')
 
-            //console.log(subs_updated.current_period_start)
-            //console.log(subs_updated.current_period_end)
-            //console.log("- - - - - - - - DATE LINE(73)")
-            //console.log(startdt, typeof startdt)
-            //console.log(enddt, typeof enddt)
+            console.log(subs_updated.current_period_start)
+            console.log(subs_updated.current_period_end)
+            console.log("- - - - - - - - DATE LINE(73)")
+            console.log(startdt, typeof startdt)
+            console.log(enddt, typeof enddt)
             
             try{
                 const dt = await userdb.findOneAndUpdate(
@@ -79,7 +79,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
         case 'invoice.paid':
           const invoice_paid = event.data.object;
-          //console.log("Inside Invoice Paid LINE(99)...........................................................................")
+          console.log("Inside Invoice Paid LINE(99)...........................................................................")
 
           try{
             const dt = await userdb.findOneAndUpdate(
@@ -108,13 +108,13 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
             
             
         default:
-        //console.log('Unhandled event type LINE(124)');
+        console.log('Unhandled event type LINE(124)');
       }
   })
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(cors({ origin: 'https://filmfair.vercel.app', credentials: true }));
+app.use(cors({ origin: 'https://filmfairserver.vercel.app', credentials: true }));
 
 app.get("/", (req, res)=>{
     res.send("FlimFair Website Server")
@@ -125,7 +125,7 @@ const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     
     if (!authHeader) {
-        //console.log("unauthorized line115")
+        console.log("unauthorized line115")
       return res.status(401).json({ message: "Unauthorized (jwt middleware line 116)" });
     }
 
@@ -148,7 +148,7 @@ const verifyToken = (req, res, next) => {
 
 app.post("/user_signup", async(req, res)=>{
     const inpres = req.body;
-    //console.log(inpres);
+    console.log(inpres);
 
     try{
         const dt = await userdb.findOne({UserEMAIL: req.body.user_email})
@@ -173,18 +173,18 @@ app.post("/user_signup", async(req, res)=>{
 
 app.post("/user_signin", async (req, res) => {
     const inpres = req.body;
-    //console.log("data received" + inpres);
+    console.log("data received" + inpres);
 
     try {
         // const dt = await userdb.findOne({ UserEMAIL: req.body.user_email, UserPASS: req.body.user_pass });
         const dt = await userdb.findOne({ UserEMAIL: req.body.user_email});
         if (!dt) {
-            //console.log("User with email not found:", user_email);
+            console.log("User with email not found:", user_email);
             return res.status(400).json({ message: "User Not Found" });
         }
         const isMatch = bcrypt.compareSync(req.body.user_pass, dt.UserPASS);
         if (isMatch) {
-            //console.log("bcrypt password Matched");
+            console.log("bcrypt password Matched");
             const endDateString = dt.Subscription.get('endDate');
             const endDate = new Date(endDateString);
             const today = new Date();
@@ -196,14 +196,14 @@ app.post("/user_signin", async (req, res) => {
             const now = Math.floor(Date.now() / 1000);
             const secondsUntilExpiration = expirationTimestamp - now;
 
-            //console.log('daysDifference is ' + daysDifference);
-            //console.log('expirationDate is ', expirationDate)
-            //console.log('expirationTimestamp is ', expirationTimestamp)
-            //console.log('secondsUntilExpiration is ', secondsUntilExpiration);
+            console.log('daysDifference is ' + daysDifference);
+            console.log('expirationDate is ', expirationDate)
+            console.log('expirationTimestamp is ', expirationTimestamp)
+            console.log('secondsUntilExpiration is ', secondsUntilExpiration);
 
             if (daysDifference == 0 || daysDifference > 0) { // User exists and subscription is active
                 //if here this means plan is active and now check for all conditions with active plan
-                //console.log('inside daysDifference == 0 || daysDifference > 0')
+                console.log('inside daysDifference == 0 || daysDifference > 0')
                 // 1) Users Fingerprint in db meaning user is logged in already and plan active
                 const device = dt.Devices.some(fingerprint => fingerprint === req.body.usrfingerprint)
                 if(device){
@@ -220,7 +220,7 @@ app.post("/user_signin", async (req, res) => {
                         endDate: dt.Subscription.get('endDate'),
                     }, process.env.JWT_KEY, { expiresIn: secondsUntilExpiration }, async(err, token) => {
                         if (err) {
-                            //console.log("LINE(230)", err);
+                            console.log("LINE(230)", err);
                             res.status(500).json({ error: err.message });
                         } else {
                             //res.json({jwt:token});
@@ -228,11 +228,11 @@ app.post("/user_signin", async (req, res) => {
                             await dt.save();
 
                             res.status(200).json({ message:'User Exists && Active1', userid: dt._id, jwt: token, expire: expirationDate});
-                            //console.log('setCookie initiated');
+                            console.log('setCookie initiated');
         
                             // const dtt = await userdb.findOne({ session_id: sesID });
                             // if(dtt){
-                                //console.log(" JWT saved in DATABASE ")
+                                console.log(" JWT saved in DATABASE ")
                             //}
                         }
                     });
@@ -255,7 +255,7 @@ app.post("/user_signin", async (req, res) => {
                                 endDate: dt.Subscription.get('endDate'),
                             }, process.env.JWT_KEY, { expiresIn: secondsUntilExpiration }, async(err, token) => {
                                 if (err) {
-                                    //console.log("LINE(230)", err);
+                                    console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
@@ -264,16 +264,16 @@ app.post("/user_signin", async (req, res) => {
                                     await dt.save();
 
                                     res.status(200).json({ message:'User Exists && Active2', userid: dt._id, jwt: token, expire: expirationDate });
-                                    //console.log('setCookie initiated');
+                                    console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        //console.log(" JWT saved in DATABASE ")
+                                        console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
                             });
                         } else{
-                            //console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 900 but devices array is not full neiter has space ") 
+                            console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 900 but devices array is not full neiter has space ") 
                             }
                     }
                     else if(dt.Subscription.get('amtPaid') == 4900){
@@ -294,7 +294,7 @@ app.post("/user_signin", async (req, res) => {
                                 endDate: dt.Subscription.get('endDate'),
                             }, process.env.JWT_KEY, { expiresIn: secondsUntilExpiration }, async(err, token) => {
                                 if (err) {
-                                    //console.log("LINE(230)", err);
+                                    console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
@@ -303,16 +303,16 @@ app.post("/user_signin", async (req, res) => {
                                     await dt.save();
 
                                     res.status(200).json({ message:'User Exists && Active3', userid: dt._id, jwt: token, expire: expirationDate });
-                                    //console.log('setCookie initiated');
+                                    console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        //console.log(" JWT saved in DATABASE ")
+                                        console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
                             });
                         } else{
-                            //console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 4900 but devices array is not full neiter has space ") 
+                            console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 4900 but devices array is not full neiter has space ") 
                             }
                     }
                     else if(dt.Subscription.get('amtPaid') == 9900){
@@ -333,7 +333,7 @@ app.post("/user_signin", async (req, res) => {
                                 endDate: dt.Subscription.get('endDate'),
                             }, process.env.JWT_KEY, { expiresIn: secondsUntilExpiration }, async(err, token) => {
                                 if (err) {
-                                    //console.log("LINE(230)", err);
+                                    console.log("LINE(230)", err);
                                     res.status(500).json({ error: err.message });
                                 } else {
                                     //res.json({jwt:token});
@@ -342,30 +342,30 @@ app.post("/user_signin", async (req, res) => {
                                     await dt.save();
                                     
                                     res.status(200).json({ message:'User Exists && Active4', userid: dt._id, jwt: token, expire: expirationDate });
-                                    //console.log('setCookie initiated');
+                                    console.log('setCookie initiated');
                 
                                     // const dtt = await userdb.findOne({ session_id: sesID });
                                     // if(dtt){
-                                        //console.log(" JWT saved in DATABASE ")
+                                        console.log(" JWT saved in DATABASE ")
                                     //}
                                 }
                             });
                         } else{
-                            //console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 9900 but devices array is not full neiter has space ") 
+                            console.log("the user gave right credentials also plan active but usrfingerprint not in array (meaning user had loggedout, now trying to login) amtpaid by usr is 9900 but devices array is not full neiter has space ") 
                         }
                     }
                 } else{
-                    //console.log("Devices array me usrfingerprint hai bhi aur nhi bhi")
+                    console.log("Devices array me usrfingerprint hai bhi aur nhi bhi")
                 }
 
                 // 2) Users plan is active but logged out meaning Fingerprint not in db so check for limit
 
             }
             else if (daysDifference && daysDifference < 0) {
-                //console.log('inside daysDifference && daysDifference < 0')
+                console.log('inside daysDifference && daysDifference < 0')
                 const device = dt.Devices.some(fingerprint => fingerprint === req.body.usrfingerprint) //meaning subs exp also fingerprint in db meaning usr loggedin
                 const length = dt.Devices.length
-                //console.log(length)
+                console.log(length)
                 if(device){
                     res.status(201).json({ message:'User Exists && EXPIRED Subs=true', userid: dt._id }); // Subscription has expired
                 } 
@@ -391,17 +391,17 @@ app.post("/user_signin", async (req, res) => {
                             res.status(201).json({ message:'User Exists && EXPIRED Subs=true', userid: dt._id });
                         }
                     } else{
-                        //console.log('unexpected, on line 475 server')
+                        console.log('unexpected, on line 475 server')
                     }
                 }
             } 
             else { // New user or expired subscription
-                //console.log('inside else 482')
+                console.log('inside else 482')
                 res.status(202).json({ message:'New User && Subs=true', userid: dt._id});
             }
         } 
         else { // User not found
-            //console.log("User Not Found Line(183)")
+            console.log("User Not Found Line(183)")
             res.status(400).json({ message: "User Not Found" });
         }
     } catch (err) {
@@ -422,13 +422,13 @@ app.post("/details", verifyToken, async(req, res)=>{
         }
 
     } catch(err){
-        //console.log("Error on Line 196 in moviedetail server endpoint", err)
+        console.log("Error on Line 196 in moviedetail server endpoint", err)
     }
 })
 
 app.patch('/updatereviewrating', async(req,res)=>{
     const data = req.body;
-    //console.log(data);
+    console.log(data);
     try{
         const updatedMovie= await apidata.findByIdAndUpdate(data.id, {
             $set: {
@@ -452,7 +452,7 @@ app.patch('/updatereviewrating', async(req,res)=>{
 app.post('/wishlistStatus', async (req, res) => {
     const userId = req.body.usrs;
     const movieId = req.body.id;
-    //console.log(userId, movieId);
+    console.log(userId, movieId);
     try {
         const user = await userdb.findOne({ _id: userId });
         
@@ -493,7 +493,7 @@ app.patch('/deletewish', async(req,res)=>{
             await dtt.save();
             res.status(200).json('Data deleted from wishlist');
         } else{
-            //console.log("user not found");
+            console.log("user not found");
         }
     } catch(err){
         res.status(404).json("Error in deleting wishlist")
@@ -522,7 +522,7 @@ app.post("/getuser", verifyToken, async(req, res)=>{
 app.post('/striperetrieve', async(req,res)=>{
     const sesID = req.body.sessionID;
     const fingerprint = req.body.fingerpri;
-    //console.log("Session ID received on /striperetrieve", sesID);
+    console.log("Session ID received on /striperetrieve", sesID);
 
     try {
         let plan;
@@ -536,9 +536,9 @@ app.post('/striperetrieve', async(req,res)=>{
         else if(session.amount_total==9900){
             plan="Premium";
         }
-        //console.log("Reached Line237")
-        //console.log(plan)
-        //console.log(session.payment_status)
+        console.log("Reached Line237")
+        console.log(plan)
+        console.log(session.payment_status)
         res.json({subscription: plan, status: session.payment_status })
         
         if(session.payment_status=='paid'){
@@ -551,7 +551,7 @@ app.post('/striperetrieve', async(req,res)=>{
     }
     catch(err){
         res.json("error on line 189 in server", err)
-        //console.log("Error aaya PIYUSH LINE(203)", err);
+        console.log("Error aaya PIYUSH LINE(203)", err);
     }
 })
 
@@ -569,7 +569,7 @@ app.post('/generatejwt', async (req, res) => {
             let daysRemaining = Math.ceil(Math.abs(differenceInMs) / millisecondsInADay); // Convert milliseconds to days and round up
             const exp=daysRemaining * 24 * 60 * 60 * 1000; 
             //daysRemaining = daysRemaining+1;
-            //console.log(daysRemaining)
+            console.log(daysRemaining)
             
             jwt.sign({
                 userID: dt._id.toString(),
@@ -584,23 +584,23 @@ app.post('/generatejwt', async (req, res) => {
                 endDate: dt.Subscription.get('endDate'),
             }, process.env.JWT_KEY, { expiresIn: `${daysRemaining}d` }, async(err, token) => {
                 if (err) {
-                    //console.log("LINE(184)", err);
+                    console.log("LINE(184)", err);
                     res.status(500).json({ error: err.message });
                 } else {
-                    res.status(202).json({jwt:token, expire:exp});
-                    //console.log('setCookie initiated');
+                    console.log('setCookie initiated');
                     dt.jwt= token;
                     dt.save();
-
+                    
+                    res.status(202).json({jwt:token, expire:exp});
                     // const dtt = await userdb.findOne({ session_id: sesID });
                     // if(dtt){
-                        //console.log(" JWT saved in DATABASE ")
+                        console.log(" JWT saved in DATABASE ")
                     //}
                 }
             });
         }
     } catch (err) {
-        //console.log("LINE(203) ", err);
+        console.log("LINE(203) ", err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -610,7 +610,7 @@ app.post('/generatejwt', async (req, res) => {
 app.post('/checkout', async(req, res) => {
     const user = req.body;
     try {
-        //console.log("new request-------------------------------------------------------------------->")
+        console.log("new request-------------------------------------------------------------------->")
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -620,8 +620,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `https://filmfair.vercel.app`,
-            cancel_url: `https://filmfair.vercel.app`,
+            success_url: `https://filmfairserver.vercel.app`,
+            cancel_url: `https://filmfairserver.vercel.app`,
             subscription_data: {
                 metadata: {
                   dbid: user.usr_id, // Add metadata here for subscription related webhooks
@@ -635,14 +635,14 @@ app.post('/checkout', async(req, res) => {
             if(dt){
                 dt.session_id= session.id;
                 await dt.save();
-                //console.log("Session ID saved in DATABASE")
+                console.log("Session ID saved in DATABASE")
             } else{
-                //console.log(" USER NOT FOUND ") 
+                console.log(" USER NOT FOUND ") 
                 }
         res.json({ url: session.url, sesid: session.id });
 
     } catch (err) {
-        //console.log(err);
+        console.log(err);
         res.status(500).json({ error: 'An error occurred' });
     }
 });
@@ -692,7 +692,7 @@ app.get("/api", async(req,res)=>{
             res.json(resp);
         }
     } catch(e){
-        //console.log("error");
+        console.log("error");
         res.status(404).send(e);
     }
 })
@@ -703,12 +703,12 @@ app.post('/customer-portal', async(req, res) => {
     try{
         const session = await stripe.billingPortal.sessions.create({
             customer: custID,
-            return_url: 'https://filmfair.vercel.app/profile',
+            return_url: 'https://filmfairserver.vercel.app/profile',
           });
-          //console.log(session);
+          console.log(session);
           res.json({sesID: session.id, url: session.url});
     } catch(e){
-        //console.log(e);
+        console.log(e);
         res.status(500).json({ error: 'An error occurred line 517' });
     }
 })
@@ -735,12 +735,12 @@ app.post('/verifyfingerprint', async(req,res)=>{
             res.status(400).json("user not logged in");
         }
     } else{
-        //console.log('User not found /verifyfingerprint')
+        console.log('User not found /verifyfingerprint')
     }
 })
 
 
 
 app.listen(port, ()=>{
-    //console.log(`Server running successfully on port no. ${port}`);
+    console.log(`Server running successfully on port no. ${port}`);
 })
