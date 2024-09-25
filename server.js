@@ -166,7 +166,8 @@ app.post("/user_signup", async(req, res)=>{
         }
         
     } catch(err){
-        res.status(404).send(err);
+        console.log(err);
+        res.status(404).json(err);
     }
 })
 
@@ -506,7 +507,7 @@ app.post("/getuser", verifyToken, async(req, res)=>{
         const dt = await userdb.findOne({ _id: user.userID });
         if(dt){
             console.log(dt)
-            res.json(dt);
+            res.status(200).json(dt);
         }
         else{
             console.log("User Not Found line304");
