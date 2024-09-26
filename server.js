@@ -540,7 +540,6 @@ app.post('/striperetrieve', async(req,res)=>{
         console.log("Reached Line237")
         console.log(plan)
         console.log(session.payment_status)
-        res.json({subscription: plan, status: session.payment_status })
         
         if(session.payment_status=='paid'){
             const dt = await userdb.findOneAndUpdate(
@@ -549,6 +548,7 @@ app.post('/striperetrieve', async(req,res)=>{
                 { returnOriginal: false }
             );
         }
+        res.json({subscription: plan, status: session.payment_status })
     }
     catch(err){
         res.json("error on line 189 in server", err)
