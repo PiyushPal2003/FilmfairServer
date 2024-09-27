@@ -114,7 +114,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(cors({ origin: 'https://filmfair.vercel.app', credentials: true }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.get("/", (req, res)=>{
     res.send("FlimFair Website Server")
@@ -239,7 +239,7 @@ app.post("/user_signin", async (req, res) => {
                     });
                 } else if(!device){
                     if(dt.Subscription.get('amtPaid') == 900){
-                        if(dt.Devices.length==1){
+                        if(dt.Devices.length>=1){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } 
                         else if(dt.Devices.length<1){
@@ -278,7 +278,7 @@ app.post("/user_signin", async (req, res) => {
                             }
                     }
                     else if(dt.Subscription.get('amtPaid') == 4900){
-                        if(dt.Devices.length==2){
+                        if(dt.Devices.length>=2){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } 
                         else if(dt.Devices.length<2){
@@ -317,7 +317,7 @@ app.post("/user_signin", async (req, res) => {
                             }
                     }
                     else if(dt.Subscription.get('amtPaid') == 9900){
-                        if(dt.Devices.length==4){
+                        if(dt.Devices.length>=4){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } 
                         else if(dt.Devices.length<4){
@@ -372,21 +372,21 @@ app.post("/user_signin", async (req, res) => {
                 } 
                 else if(!device){
                     if(dt.Subscription.get('amtPaid')==900){
-                        if(length==1){
+                        if(length>=1){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } else if(length<1){
                             res.status(201).json({ message:'User Exists && EXPIRED Subs=true', userid: dt._id });
                         }
                     }
                     else if (dt.Subscription.get('amtPaid') == 4900){
-                        if(length==2){
+                        if(length>=2){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } else if(length<2){
                             res.status(201).json({ message:'User Exists && EXPIRED Subs=true', userid: dt._id });
                         }
                     }
                     else if(dt.Subscription.get('amtPaid')==9900){
-                        if(length==4){
+                        if(length>=4){
                             res.status(210).json({ message: "Device Limit Reached" });
                         } else if(length<4){
                             res.status(201).json({ message:'User Exists && EXPIRED Subs=true', userid: dt._id });
@@ -621,8 +621,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `https://filmfair.vercel.app`,
-            cancel_url: `https://filmfair.vercel.app`,
+            success_url: `http://localhost:3000`,
+            cancel_url: `http://localhost:3000`,
             subscription_data: {
                 metadata: {
                   dbid: user.usr_id, // Add metadata here for subscription related webhooks
@@ -704,7 +704,7 @@ app.post('/customer-portal', async(req, res) => {
     try{
         const session = await stripe.billingPortal.sessions.create({
             customer: custID,
-            return_url: 'https://filmfair.vercel.app/profile',
+            return_url: 'http://localhost:3000/profile',
           });
           console.log(session);
           res.json({sesID: session.id, url: session.url});
@@ -724,6 +724,7 @@ app.post('/logoutuser', async(req,res)=>{
         {$pull: { Devices: req.body.fingerprint }},
         { new: true }
     );
+    res.status(200).json({message: "logout successfull"});
 })
 
 app.post('/verifyfingerprint', async(req,res)=>{
