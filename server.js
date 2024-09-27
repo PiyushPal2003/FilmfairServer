@@ -114,7 +114,7 @@ app.post("/hooks", express.raw({type: 'application/json'}), async(req,res)=>{
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://filmfair.vercel.app', credentials: true }));
 
 app.get("/", (req, res)=>{
     res.send("FlimFair Website Server")
@@ -621,8 +621,8 @@ app.post('/checkout', async(req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `http://localhost:3000`,
-            cancel_url: `http://localhost:3000`,
+            success_url: `https://filmfair.vercel.app`,
+            cancel_url: `https://filmfair.vercel.app`,
             subscription_data: {
                 metadata: {
                   dbid: user.usr_id, // Add metadata here for subscription related webhooks
@@ -704,7 +704,7 @@ app.post('/customer-portal', async(req, res) => {
     try{
         const session = await stripe.billingPortal.sessions.create({
             customer: custID,
-            return_url: 'http://localhost:3000/profile',
+            return_url: 'https://filmfair.vercel.app/profile',
           });
           console.log(session);
           res.json({sesID: session.id, url: session.url});
