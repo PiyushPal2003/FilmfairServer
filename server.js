@@ -727,6 +727,24 @@ app.post('/logoutuser', async(req,res)=>{
     res.status(200).json({message: "logout successfull"});
 })
 
+app.post('/logoutalluser', async(req,res)=>{
+    const dt = await userdb.findOneAndUpdate(
+        { _id: req.body.id },
+        {$pull: { Devices: {$ne: req.body.fingerprint} }},
+        { new: true }
+    );
+    res.status(200).json({message: "logout successfull"});
+})
+
+app.post('/deleteaccount', async(req,res)=>{
+    const deletedUser = await userdb.findOneAndDelete({ _id: req.body.id });
+    if (deletedUser) {
+        res.status(200).json({ message: "User successfully deleted"});
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+})
+
 app.post('/verifyfingerprint', async(req,res)=>{
     const dt = await userdb.findOne({ _id: req.body.id })
     if(dt){
