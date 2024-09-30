@@ -510,10 +510,11 @@ app.post("/getuser", verifyToken, async(req, res)=>{
             res.status(200).json(dt);
         }
         else{
-            console.log("User Not Found line304");
+            res.status(400).json("user not found")
         }
     }catch(e){
         console.log("Piyush Error on line 298",e)
+        res.status(400).json("/getuser::error in catch block")
     }
 })
 
